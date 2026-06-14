@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+export const dynamic = 'force-dynamic';
+
 // 1. API Lấy danh sách câu hỏi (Dành cho trang quản trị Admin)
 export async function GET() {
   try {
