@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Question {
+  id      Int     @id @default(autoincrement())
+  q_num   Int?
+  q_text  String? @db.Text
+  options String? @db.Text
+  answer  String? @db.VarChar(10)
+  domain  String? @db.VarChar(255)
+  exp_en  String? @db.Text
+  exp_vi  String? @db.Text
+
+  @@map("questions") // <--- THÊM DÒNG NÀY ĐỂ ÁNH XẠ ĐÚNG TÊN BẢNG
+}
+
+model Player {
+  id       Int      @id @default(autoincrement())
+  nickname String   @unique @db.VarChar(100)
+  joinedAt DateTime @default(now())
+}
+// Bảng lưu trạng thái thi Real-time
+model ExamSession {
+  id         Int      @id @default(autoincrement())
+  nickname   String   @unique @db.VarChar(100)
+  current_q  Int      @default(1)
+  total_q    Int      @default(0)
+  is_peeking Boolean  @default(false)
+  updatedAt  DateTime @updatedAt
+}
+
+// Bảng lưu lịch sử thi vĩnh viễn để Admin xem lại
+model ExamHistory {
+  id          Int      @id @default(autoincrement())
+  nickname    String   @db.VarChar(100)
+  total_q     Int
+  correct_q   Int
+  score       Float    // Điểm số tính theo thang điểm 10
+  details     String   @db.LongText // Lưu chuỗi JSON chi tiết kết quả từng câu
+  createdAt   DateTime @default(now())
+}

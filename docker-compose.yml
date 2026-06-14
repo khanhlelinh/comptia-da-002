@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mysql_db:
+    image: mysql:8.0
+    container_name: comptia_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password123 # Bạn có thể đổi pass ở đây
+      MYSQL_DATABASE: comptia_exam_db  # Tự động tạo DB này khi chạy
+    ports:
+      - "5306:3306" # Ánh xạ cổng host 5306 vào cổng 3306 của container
+    volumes:
+      - mysql_data:/var/lib/mysql # Lưu trữ dữ liệu để không bị mất khi tắt Docker
+
+volumes:
+  mysql_data:
